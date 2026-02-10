@@ -1,0 +1,188 @@
+Include the HTML for a Bootstrap Modal in index.html. I need you to create 
+a modal for my calender the modal id should be set to event_model. 
+With a event name, weekday,time,event modality,location,remote url, atendees.
+
+<!-- Event Modal -->
+    <div class="modal fade" id="event_modal" tabindex="-1" aria-labelledby="event_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="event_modal_label">Create Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="event_form">
+                        <div class="mb-3">
+                            <label for="event_name" class="form-label">Event Name</label>
+                            <input type="text" class="form-control" id="event_name" name="event_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="weekday" class="form-label">Weekday</label>
+                            <select class="form-select" id="weekday" name="weekday" required>
+                                <option value="">Select a day</option>
+                                <option value="sunday">Sunday</option>
+                                <option value="monday">Monday</option>
+                                <option value="tuesday">Tuesday</option>
+                                <option value="wednesday">Wednesday</option>
+                                <option value="thursday">Thursday</option>
+                                <option value="friday">Friday</option>
+                                <option value="saturday">Saturday</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="time" class="form-label">Time</label>
+                            <input type="time" class="form-control" id="time" name="time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="event_modality" class="form-label">Event Modality</label>
+                            <select class="form-select" id="event_modality" name="event_modality" required>
+                                <option value="">Select modality</option>
+                                <option value="in-person">In-Person</option>
+                                <option value="remote">Remote</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location">
+                        </div>
+                        <div class="mb-3">
+                            <label for="remote_url" class="form-label">Remote URL</label>
+                            <input type="url" class="form-control" id="remote_url" name="remote_url"
+                                placeholder="https://...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="attendees" class="form-label">Attendees</label>
+                            <input type="text" class="form-control" id="attendees" name="attendees"
+                                placeholder="Enter attendees separated by commas">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save_event">Save Event</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    in every modal i need some validations, such as a name event name and time should all be reqauired fields.
+- note i changed the output it gave me a little bit to meet required functions names and functioanlity
+    // Wait for DOM to load
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Get the save button
+    const saveButton = document.getElementById('save_event');
+    const eventForm = document.getElementById('event_form');
+
+    // Add click event to save button
+    saveButton.addEventListener('click', function () {
+
+        // Check if form is valid (uses HTML5 required validation)
+        if (!eventForm.checkValidity()) {
+            // Show validation messages
+            eventForm.reportValidity();
+            return; // Stop if form is invalid
+        }
+
+        // Get form values
+        let eventName = document.getElementById('event_name').value;
+        let weekday = document.getElementById('event_weekday').value;
+        let time = document.getElementById('event_time').value;
+        let modality = document.getElementById('event_modality').value;
+        let location = document.getElementById('event_location').value;
+        let remoteUrl = document.getElementById('event_remote_url').value;
+        let attendees = document.getElementById('event_attendees').value;
+
+        // Log to console (for testing)
+        console.log('Event saved:', {
+            name: eventName,
+            weekday: weekday,
+            time: time,
+            modality: modality,
+            location: location,
+            remoteUrl: remoteUrl,
+            attendees: attendees
+        });
+
+        // Create event card and add to calendar
+        addEventToCalendar(eventName, weekday, time);
+
+        // Reset form
+        eventForm.reset();
+
+        // Close modal
+        let modal = bootstrap.Modal.getInstance(document.getElementById('event_modal'));
+        modal.hide();
+    });
+});
+
+// Function to add event to calendar
+function addEventToCalendar(eventName, weekday, time) {
+    // Find the correct day column
+    const dayColumn = document.getElementById(weekday);
+
+    if (dayColumn) {
+        // Create event card
+        const eventCard = document.createElement('div');
+        eventCard.className = 'card mb-2 bg-primary text-white';
+        eventCard.innerHTML = `
+            <div class="card-body p-2">
+                <small class="fw-bold">${eventName}</small><br>
+                <small>${time}</small>
+            </div>
+        `;
+
+        // Add to day column
+        dayColumn.appendChild(eventCard);
+    }
+}
+Done! ✅ I've added JavaScript to 
+script.js
+ that:
+
+Validates required fields - Won't save if event name, weekday, time, or modality are empty
+Shows validation messages - Browser will highlight missing required fields
+Saves the event - Logs data to console and adds a card to the calendar
+Resets the form - Clears fields after saving
+Closes the modal - Automatically closes after successful save
+Try it out:
+
+Open your calendar in a browser
+Click "Create Event"
+Try clicking "Save Event" without filling fields → You'll see validation errors
+Fill in the required fields and save → Event appears on the calendar!
+
+
+how do i change the background color of a event based on category picked would i need to do it in my .js file or index.tml 
+
+Thought for <1s
+
+You'd do it in your JS file — specifically in the 
+createEventCard()
+ function. Since the cards are created dynamically with JavaScript, that's where you control the styling.
+
+Here's the approach:
+
+javascript
+// In createEventCard(), add a color based on category
+let bgColor = '';
+if (eventDetails.category === 'work') {
+    bgColor = 'bg-primary';       // blue
+} else if (eventDetails.category === 'personal') {
+    bgColor = 'bg-success';       // green
+} else if (eventDetails.category === 'Academic') {
+    bgColor = 'bg-warning';       // yellow
+} else {
+    bgColor = 'bg-secondary';     // gray
+}
+event_element.classList = `event row border rounded m-1 py-1 ${bgColor} text-white`;
+But first, you'll also need to:
+
+Read the category in 
+saveEvent()
+ and add it to eventObj
+Pass it through to 
+createEventCard()
+
